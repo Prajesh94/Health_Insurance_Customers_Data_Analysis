@@ -1,8 +1,5 @@
-# Health_Insurance_Customers_Data_Analysis
-Capstone Project Final Submission
 
 Health Insurance Customers Data Analysis
-Health Insurance Customers Data Analysis_
 PROJECT TITLE: Health Insurance Customers Data Analysis
 Project Goals
 The main goal of this project is to perform Exploratory Data Analysis (EDA) on health insurance customer data to identify meaningful patterns, trends, and insights.
@@ -39,8 +36,8 @@ Use descriptive statistics and data visualizations to identify patterns and outl
 Generate meaningful insights from the available health insurance data.
 
 
-[103]
-0s
+[81]
+4s
 # ==============================================================================
 # IMPORT LIBRARIES & ENVIRONMENT SETUP
 # ==============================================================================
@@ -67,14 +64,22 @@ pd.set_option('display.width', 1000)
 print("Libraries imported and environment configured successfully!")
 Libraries imported and environment configured successfully!
 
-[104]
+[82]
 1s
+# ==============================================================================
+# GOOGLE COLAB DRIVE MOUNT
+# ==============================================================================
 
+from google.colab import drive
+drive.mount('/content/drive')
+
+print("Google Drive mounted successfully!")
 Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount("/content/drive", force_remount=True).
 Google Drive mounted successfully!
 
-[105]
-
+[83]
+0s
+df = pd.read_csv("/content/Health data set.csv")
 📊 Dataset Description Summary
 Dataset Name: Health Insurance Customer Dataset
 Source: Google Colab Drive Link
@@ -108,12 +113,12 @@ Analysis of relationships between customer health conditions, insurance claims, 
 Identification and investigation of unusual values and potential data quality issues.
 Identification of key insights, patterns, and findings from the analysis.
 
-[106]
+[84]
 0s
 df
 
 
-[107]
+[85]
 0s
 df.info()
 <class 'pandas.core.frame.DataFrame'>
@@ -162,65 +167,67 @@ Data columns (total 38 columns):
 dtypes: float64(9), int64(7), object(22)
 memory usage: 2.3+ MB
 
-[108]
+[86]
 0s
 df.head()
 
 
-[109]
+[87]
 0s
 df.tail()
 
 
-[110]
+[88]
 0s
 df.shape
 (8000, 38)
 
-[111]
+[89]
 0s
 df.columns
 Index(['policy_id', 'customer_name', 'gender', 'age', 'marital_status', 'state', 'city', 'pincode', 'aadhaar_masked', 'occupation_type', 'annual_income_inr', 'bmi', 'tobacco_usage', 'alcohol_units_per_week', 'physical_activity_level', 'diet_type', 'has_diabetes', 'has_hypertension', 'family_history_cardiac', 'stress_level_score', 'policy_type', 'sum_insured', 'policy_start_date', 'claim_date', 'hospital_name', 'hospital_tier', 'room_category', 'icu_days', 'length_of_stay', 'cashless_claim', 'agent_channel', 'hospital_bill_amount', 'pre_hospitalization_expense', 'post_hospitalization_expense', 'non_payable_items', 'deductible_amount', 'co_pay_amount', 'total_claim_amount'], dtype='object')
 
-[112]
+[90]
 0s
 df.dtypes
 
 
-[113]
+[91]
 0s
 df.describe()
 
 
-[114]
+[92]
 0s
 df.isnull().sum()
 
 
-[115]
+[93]
 0s
 df.duplicated().sum()
 np.int64(5)
 Data Cleaning
-Checking the dataset structure, column names, and data types.
-Identifying missing values in each column.
-Detecting duplicate records.
-Converting columns to appropriate data types.
-Converting date columns into the correct date format.
-Correcting inconsistent values in categorical columns.
-Cleaning numerical columns and handling invalid values.
-Checking for invalid values in age, BMI, income, and medical expenses.
-Validating policy start dates and claim dates.
-Checking consistency between ICU days and hospital length of stay.
-Handling missing values using appropriate methods.
-Removing duplicate records.
-Detecting and investigating outliers using the IQR method.
-Verifying data quality after cleaning.
-Performing final checks for missing values and duplicates.
-Preparing the cleaned dataset for Exploratory Data Analysis (EDA).
+Checked the dataset structure, column names, and data types.
+Identified missing values in each column.
+Detected duplicate records.
+Converted columns to appropriate data types.
+Converted date columns into the correct datetime format.
+Corrected inconsistent values in categorical columns.
+Cleaned numerical columns and handled invalid values.
+Checked invalid values in age, BMI, income, and medical expenses.
+Validated policy start dates and claim dates.
+Checked consistency between ICU days and hospital length of stay.
+Handled missing values using appropriate methods.
+Removed duplicate records.
+Detected and investigated outliers using the IQR method.
+Verified data quality after cleaning.
+Performed final checks for missing values and duplicate records.
+Corrected mismatched column names by adding or removing underscores where necessary.
+Data Cleaning (Datetime, Duplicates & Numeric Conversion) – Converted date columns, removed duplicate records, and converted numerical columns to appropriate data types.
+Prepared the cleaned dataset for Exploratory Data Analysis (EDA).
 Step 1: Checking dataset structure, column names, and data types
 
-[116]
+[94]
 0s
 # Step 1: Initial dataset inspection
 
@@ -236,7 +243,7 @@ display(df.dtypes.to_frame(name="Data Type"))
 
 Step 2: Identifying missing values in each column
 
-[117]
+[95]
 0s
 # Step 2: Check missing values
 
@@ -253,13 +260,20 @@ print("Total Missing Values:", df.isnull().sum().sum())
 
 Step 3: Detecting duplicate records
 
-[118]
+[96]
 0s
+
+# 3. Check duplicate records before removal
+
+print("Duplicate Records:", df.duplicated().sum())
+
+# Display duplicate rows for inspection
+display(df[df.duplicated(keep=False)].head(10))
 
 
 Step 4: Converting columns to appropriate data types
 
-[119]
+[97]
 0s
 # Step 4: Review column data types
 
@@ -280,7 +294,7 @@ print("\nCategorical Columns:", categorical_columns)
 
 Step 5: Converting date columns into the correct date format
 
-[120]
+[98]
 0s
 # Step 5: Convert date columns
 
@@ -299,7 +313,7 @@ for col in date_columns:
 Date conversion completed.
 Step 6. Correct inconsistent values in categorical columns
 
-[121]
+[99]
 0s
 
 # Step 6: Remove unnecessary spaces from text columns
@@ -535,34 +549,34 @@ Name: count, dtype: int64
 
 hospital_bill_amount:
 hospital_bill_amount
-5000          10
-82792.92       4
-53122.25       3
-173995.15      2
-â‚¹119,068     2
-â‚¹67,443      2
-â‚¹172,012     2
-â‚¹45,901      2
-30894.1        1
-204298.85      1
+5000         10
+82792.92      4
+53122.25      3
+173995.15     2
+₹119,068      2
+₹67,443       2
+₹172,012      2
+₹45,901       2
+30894.1       1
+204298.85     1
 Name: count, dtype: int64
 
 total_claim_amount:
 total_claim_amount
-5000          9
-78465.72      4
-59218.94      3
-â‚¹68,492     2
-5,000         2
-99182.94      2
-72,449        2
-â‚¹67,312     1
-29949.94      1
-â‚¹102,063    1
+5000        9
+78465.72    4
+59218.94    3
+₹68,492     2
+5,000       2
+99182.94    2
+72,449      2
+₹67,312     1
+29949.94    1
+₹102,063    1
 Name: count, dtype: int64
 Step 7. Clean numerical columns and identify invalid values
 
-[122]
+[100]
 0s
 
 # Step 7: Identify numerical columns
@@ -580,7 +594,7 @@ display(df[numerical_columns].describe().T)
 
 Step 8. Check invalid values in age, BMI, income, and medical expenses
 
-[123]
+[101]
 0s
 
 # Step 8: Identify potentially invalid values
@@ -606,7 +620,8 @@ for col, rule in validation_rules.items():
 
 Step 9. Validate policy start dates and claim dates
 
-[124]
+[102]
+0s
 
 # Step 9: Check policy and claim dates
 
@@ -631,7 +646,7 @@ if {"policystartdate", "claimdate"}.issubset(df.columns):
 
 Step 10: Check consistency between ICU days and hospital stay
 
-[125]
+[103]
 0s
 
 # Step 10: Validate hospital stay duration
@@ -656,7 +671,7 @@ else:
 Required columns are not available.
 Step 11. Handle missing values using appropriate methods
 
-[126]
+[104]
 0s
 
 # Step 11: Handle missing values
@@ -697,7 +712,7 @@ display(df.isnull().sum()[df.isnull().sum() > 0])
 
 Step 12. Remove duplicate records
 
-[127]
+[105]
 0s
 
 # Step 12: Remove exact duplicate rows
@@ -717,7 +732,7 @@ Duplicates After Removal: 0
 Dataset Shape After Removal: (7995, 38)
 Step 13. Detect and investigate outliers using the IQR method
 
-[128]
+[106]
 0s
 
 # Step 13: Detect outliers using IQR
@@ -762,9 +777,10 @@ outlier_table = pd.DataFrame(outlier_results)
 display(outlier_table)
 
 
+Next steps:
 Step 14. Verify data quality after cleaning
 
-[129]
+[107]
 0s
 
 # Step 14: Review cleaned dataset
@@ -828,30 +844,79 @@ dtypes: float64(9), int64(7), object(22)
 memory usage: 2.4+ MB
 Step 15. Perform final checks for missing values and duplicates
 
-[130]
+[108]
 0s
 
-# Step 15: Final data quality report
 
-final_report = pd.DataFrame({
-    "Data Type": df.dtypes.astype(str),
-    "Missing Values": df.isnull().sum(),
-    "Missing Percentage": (
-        df.isnull().mean() * 100
-    ).round(2),
-    "Unique Values": df.nunique()
-})
+Next steps:
+16.Corrected mismatched column names by adding and removing underscores where necessary.
 
-display(final_report)
+[109]
+0s
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
 
-print("\nFinal Number of Rows:", df.shape[0])
-print("Final Number of Columns:", df.shape[1])
-print("Final Duplicate Records:", df.duplicated().sum())
+# Assuming your dataframe is loaded as 'df'
+# Example rename fix if your dataset has inconsistent names:
+df = df.rename(
+    columns={
+        'policystartdate': 'policy_start_date',
+        'claimdate': 'claim_date',
+        'totalclaimamount': 'total_claim_amount',
+        'hospitalbillamount': 'hospital_bill_amount',
+        'annualincomeinr': 'annual_income_inr',
+        'lengthofstay': 'length_of_stay',
+        'policytype': 'policy_type',
+        'hospitaltier': 'hospital_tier',
+    }
+)
 
+print('Columns after fixing names:', df.columns.tolist())
 
-Step 16. Prepare the cleaned dataset for EDA
+Columns after fixing names: ['policy_id', 'customer_name', 'gender', 'age', 'marital_status', 'state', 'city', 'pincode', 'aadhaar_masked', 'occupation_type', 'annual_income_inr', 'bmi', 'tobacco_usage', 'alcohol_units_per_week', 'physical_activity_level', 'diet_type', 'has_diabetes', 'has_hypertension', 'family_history_cardiac', 'stress_level_score', 'policy_type', 'sum_insured', 'policy_start_date', 'claim_date', 'hospital_name', 'hospital_tier', 'room_category', 'icu_days', 'length_of_stay', 'cashless_claim', 'agent_channel', 'hospital_bill_amount', 'pre_hospitalization_expense', 'post_hospitalization_expense', 'non_payable_items', 'deductible_amount', 'co_pay_amount', 'total_claim_amount']
+17. Data Cleaning (Datetime, Duplicates & Numeric Conversion)
 
-[131]
+[110]
+0s
+# 1. Drop duplicate rows first
+initial_count = len(df)
+df = df.drop_duplicates().copy()  # added .copy() to avoid SettingWithCopyWarning
+print(f'Dropped {initial_count - len(df)} duplicate rows.')
+
+# 2. Convert date columns consistently
+date_cols = ['claim_date', 'policy_start_date']
+for col in date_cols:
+    if col in df.columns:
+        df[col] = pd.to_datetime(df[col], errors='coerce')
+
+# 3. Clean and convert total_claim_amount to numeric
+if 'total_claim_amount' in df.columns:
+    # Fillna transforms missing values to empty strings temporarily so regex doesn't break
+    if df['total_claim_amount'].dtype == object:
+        df['total_claim_amount'] = (
+            df['total_claim_amount']
+            .fillna('')
+            .astype(str)
+            .str.replace(r'[^\d.]', '', regex=True)
+        )
+    df['total_claim_amount'] = pd.to_numeric(
+        df['total_claim_amount'], errors='coerce'
+    )
+
+Dropped 0 duplicate rows.
+/tmp/ipykernel_25204/3216888756.py:10: UserWarning:
+
+Parsing dates in %d-%m-%Y format when dayfirst=False (the default) was specified. Pass `dayfirst=True` or specify a format to silence this warning.
+
+/tmp/ipykernel_25204/3216888756.py:10: UserWarning:
+
+Parsing dates in %d-%m-%Y format when dayfirst=False (the default) was specified. Pass `dayfirst=True` or specify a format to silence this warning.
+
+Step 18. Prepare the cleaned dataset for EDA
+
+[111]
 0s
 
 # Step 16: Save the cleaned dataset
@@ -873,50 +938,19 @@ Exploratory Data Analysis (EDA) was performed on the cleaned Health Insurance Cu
 The analysis included customer age and BMI distributions, income patterns, health conditions, hospital expenses, claim amounts, and hospitalization details. Correlation analysis was used to examine relationships between numerical variables. The findings help provide a better understanding of customer characteristics, healthcare expenses, and insurance claim patterns.
 Step 1: Import libraries and load the dataset
 
-[139]
-0s
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from google.colab import files
-import os
+[112]
+1m
 
-file_path = "/content/Health Insurance Customers Data Analysis.csv"
-
-if os.path.exists(file_path):
-    a = pd.read_csv(file_path)
-else:
-    uploaded = files.upload()
-    file_path = next(iter(uploaded))
-    a = pd.read_csv(file_path)
-
-print("Dataset loaded successfully!")
-print("Initial shape:", a.shape)
-display(a.head())
 
 Step 2: Dataset overview
 
-[140]
+[113]
 0s
-print("COLUMN NAMES")
-print(a.columns.tolist())
 
-print("\nDATASET INFORMATION")
-a.info()
-
-print("\nMISSING VALUES IN EACH COLUMN")
-display(a.isnull().sum().to_frame("Missing Values"))
-
-print("\nDUPLICATE RECORDS")
-print(a.duplicated().sum())
-
-print("\nSTATISTICAL SUMMARY")
-display(a.describe(include="all").T)
 
 Step 3 — Clean the dataset
 
-[141]
+[114]
 0s
 # Standardize column-name spacing and capitalization
 a.columns = a.columns.str.strip().str.lower()
@@ -937,7 +971,7 @@ display(a.dtypes.to_frame("Data Type"))
 
 Step 4 — Correct data types
 
-[142]
+[115]
 0s
 # Convert date columns only if present
 date_cols = ["policy_start_date", "claim_date"]
@@ -970,7 +1004,7 @@ display(a.dtypes.to_frame("Data Type"))
 
 Step 5 — Handle missing values carefully
 
-[143]
+[116]
 0s
 # Fill selected numeric columns with their median
 median_cols = [
@@ -992,7 +1026,7 @@ display(a.isnull().sum().to_frame("Remaining Missing Values"))
 
 Step 6 — Numerical data analysis
 
-[144]
+[117]
 0s
 numeric_cols = a.select_dtypes(include=np.number).columns.tolist()
 
@@ -1020,48 +1054,20 @@ if numeric_cols:
 
 Step 7 — Categorical data analysis
 
-[145]
+[118]
 0s
-categorical_cols = a.select_dtypes(
-    include=["object", "category", "bool"]
-).columns.tolist()
 
-print("Categorical columns:")
-print(categorical_cols)
 
-for col in categorical_cols:
-    print(f"\nCategory Analysis: {col}")
-
-    counts = a[col].value_counts(dropna=False)
-    percentages = (
-        a[col].value_counts(dropna=False, normalize=True) * 100
-    ).round(2)
-
-    result = pd.concat(
-        [
-            counts.rename("Count"),
-            percentages.rename("Percentage (%)")
-        ],
-        axis=1
-    )
-
-    display(result)
-
+Next steps:
 Step 8 — Most common categories
 
-[146]
+[119]
 0s
-for col in categorical_cols:
-    print(f"\nMost Common Category: {col}")
 
-    modes = a[col].mode(dropna=True)
-    print("Mode:", modes.tolist())
-
-    display(a[col].value_counts(dropna=False).head(5))
 
 Step 9 — Customer demographic analysis
 
-[147]
+[120]
 0s
 demographic_cols = [
     "age", "gender", "city", "state",
@@ -1079,7 +1085,7 @@ for col in demographic_cols:
 
 Step 10 — Policy and premium analysis
 
-[148]
+[121]
 0s
 policy_cols = [
     "policy_type", "sum_insured", "premium_amount",
@@ -1118,7 +1124,7 @@ if {"policy_type", "sum_insured"}.issubset(a.columns):
 
 Step 11 — Claim analysis
 
-[149]
+[122]
 0s
 claim_cols = [
     "claim_status",
@@ -1160,7 +1166,7 @@ if {"claim_status", "hospital_bill_amount"}.issubset(a.columns):
 
 Step 12 — Percentage analysis
 
-[150]
+[123]
 0s
 percentage_candidates = [
     "gender",
@@ -1184,56 +1190,13 @@ for col in percentage_candidates:
 
 STEP 13: DISTRIBUTION ANALYSIS – STATISTICAL DETAILS & SUMMARY
 
-[158]
-import pandas as pd
-import numpy as np
-import re
+[124]
+0s
 
-# Helper function to clean text/currency into floats
-def clean_numeric_col(val):
-    if pd.isna(val): return np.nan
-    s = re.sub(r'[^\d.]', '', str(val))
-    return float(s) if s else np.nan
-
-# Select key numerical columns for distribution analysis
-numerical_columns = [
-    'age', 'annual_income_inr', 'bmi', 'icu_days',
-    'length_of_stay', 'stress_level_score', 'total_claim_clean'
-]
-
-# Ensure all target columns are converted to clean floats before calculation
-for col in numerical_columns:
-    if col in df.columns:
-        if df[col].dtype == 'object':
-            df[col] = df[col].apply(clean_numeric_col)
-
-valid_num_cols = [col for col in numerical_columns if col in df.columns]
-
-print("=" * 60)
-print("DISTRIBUTION ANALYSIS – STATISTICAL SUMMARY")
-print("=" * 60)
-
-print("\n--- Mean ---")
-print(df[valid_num_cols].mean().round(2))
-
-print("\n--- Median ---")
-print(df[valid_num_cols].median().round(2))
-
-print("\n--- Minimum ---")
-print(df[valid_num_cols].min())
-
-print("\n--- Maximum ---")
-print(df[valid_num_cols].max())
-
-print("\n--- Standard Deviation ---")
-print(df[valid_num_cols].std().round(2))
-
-print("\n--- Full Descriptive Statistics (df.describe()) ---")
-display(df[valid_num_cols].describe().round(2))
 
 Step 14 — Correlation analysis
 
-[160]
+[125]
 0s
 # Select numerical columns for correlation matrix
 numeric_df = df.select_dtypes(include='number')
@@ -1248,7 +1211,7 @@ display(correlation_matrix.round(4))
 
 Step 15 — Outlier analysis using IQR
 
-[153]
+[126]
 0s
 outlier_results = []
 
@@ -1280,7 +1243,7 @@ display(pd.DataFrame(outlier_results))
 
 Step 16 — Data validation
 
-[154]
+[127]
 0s
 # Check potential invalid values
 validation_rules = {
@@ -1337,7 +1300,7 @@ Claims dated before policy start: 0
 Records where ICU days exceed length of stay: 0
 Step 17 — Final EDA summary
 
-[155]
+[128]
 0s
 print("=" * 55)
 print("HEALTH INSURANCE CUSTOMER DATA - EDA SUMMARY")
@@ -1364,7 +1327,8 @@ print("\nEDA Analysis Completed!")
 Data Visualization
 In this section, we create informative visual representations using Matplotlib, Seaborn, and Plotly to uncover hidden patterns in customer demographics, medical expenses, and insurance claims.
 
-[165]
+[129]
+0s
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -1379,7 +1343,7 @@ plt.rcParams["font.sans-serif"] = "DejaVu Sans"
 Goal: To identify the most and least popular policy types among customers.
 Categories used: policy_type and the count of policies in each category.
 
-[166]
+[130]
 0s
 # Code
 df["policy_type"].value_counts().plot(kind="bar", color="#1f77b4")
@@ -1392,11 +1356,56 @@ plt.show()
 
 Output explanation: The height of each bar represents the total number of customers enrolled in each policy type, allowing quick visual comparison across options.
 Insight: Individual policies account for 48.80%, Family Floater policies account for 35.56%, and Senior Citizen policies account for 15.64% of all coverage plans.
+1.1 Bar Chart – Gender Standardization & Percentage
+Insights:
+Identified and standardized inconsistent gender values to ensure accurate analysis.
+Compared the number of male and female customers in the dataset.
+Calculated the percentage distribution of each gender category.
+Identified the gender category with the highest number of customers.
+
+[131]
+0s
+# Standardize gender values
+df['gender'] = df['gender'].replace(
+    {'M': 'Male', 'F': 'Female', 'm': 'Male', 'f': 'Female'}
+)
+
+# Calculate percentages after cleaning and duplicate removal
+gender_pct = df['gender'].value_counts(normalize=True) * 100
+print(gender_pct)
+
+# Plot Bar Chart
+plt.figure(figsize=(6, 4))
+gender_pct.plot(kind='bar', color=['skyblue', 'lightcoral'], edgecolor='black')
+plt.title('Gender Distribution (%)')
+plt.ylabel('Percentage (%)')
+plt.xticks(rotation=0)
+plt.show()
+
+Output:
+A bar chart displaying the gender-wise customer count and percentage.
+Standardized gender categories for consistent analysis.
+A clear comparison of the gender distribution in the Health Insurance dataset.
+Step 1.2- Average Claim Amount by Policy Type
+Insights:
+Identified the policy type with the highest average claim amount.
+Compared average and median claim amounts across policy categories.
+Examined differences in claim costs between individual and family floater policies.
+Used the results to understand claim patterns across different policy types.
+
+[132]
+0s
+plt.show()
+
+Output:
+A summary table showing the average and median claim amounts by policy type.
+A bar chart comparing average claim amounts across policy categories.
+Insights into claim cost variations to support further analysis of the Health Insurance dataset.
 2. Line Chart – Monthly Claim Trends
 Goal: To track fluctuations and seasonality in insurance claim submissions over the calendar year.
 Categories used: claim_month and the number of claims recorded in each month.
 
-[167]
+[133]
 0s
 # Code
 months = [
@@ -1437,15 +1446,9 @@ Insight: Claim filings display steady volume throughout the year with subtle pea
 Goal: To identify the age brackets containing the highest and lowest concentration of policyholders.
 Categories used: age, grouped into continuous numerical bins.
 
-[168]
+[134]
 0s
-# Code
-plt.hist(df["age"], bins=10, color="#4c72b0", edgecolor="black")
-plt.title("Customer Age Distribution")
-plt.xlabel("Age (Years)")
-plt.ylabel("Number of Customers")
-plt.tight_layout()
-plt.show()
+
 
 Output explanation: Each vertical bar represents a specific age group interval, with the height showing how many customers belong to that bracket.
 Insight: The average customer age is 41.75 years, with a median of 41 years, spanning an active policyholder age range from 18 to 85 years.
@@ -1454,20 +1457,9 @@ Goal: To detect unusually high or suspicious hospital bill amounts that deviate 
 Category used: hospital_bill_amount — the cleaned numerical billing amount for each hospitalization
 
 
-[169]
+[135]
 0s
-# Code
-df["hospital_bill_amount_num"] = pd.to_numeric(
-    df["hospital_bill_amount"].astype(str).str.replace(r"[^\d.]", "", regex=True),
-    errors="coerce",
-)
 
-sns.boxplot(y=df["hospital_bill_amount_num"], color="#e74c3c")
-
-plt.title("Hospital Bill Amount Outlier Analysis")
-plt.ylabel("Hospital Bill Amount (₹)")
-plt.tight_layout()
-plt.show()
 
 Output explanation: The central box indicates the interquartile range (IQR, middle 50% of bills), the horizontal median line splits the distribution, and isolated points beyond the whiskers denote upper billing outliers.
 Insight: While typical hospital bills cluster between ₹50,000 and ₹2,500,000, extreme high-cost treatments form prominent outliers requiring targeted audit verification.
@@ -1475,7 +1467,7 @@ Insight: While typical hospital bills cluster between ₹50,000 and ₹2,500,000
 Goal: To examine whether higher pre-admission expenses correlate with larger post-discharge medical costs.
 Categories used: pre_hospitalization_expense on the x-axis and post_hospitalization_expense on the y-axis.
 
-[170]
+[136]
 0s
 # Code
 sns.scatterplot(
@@ -1498,7 +1490,7 @@ Insight: A positive linear trajectory demonstrates that patients requiring exten
 Goal: To evaluate gender equity and demographic composition across the customer base.
 Categories used: gender — Male, Female (standardized).
 
-[171]
+[137]
 0s
 # Code
 gender_clean = df["gender"].str.upper().map(
@@ -1523,30 +1515,9 @@ Insight: The customer base shows near-equal gender balance, with female policyho
 Goal: To identify key dependencies among age, health indicators, stay duration, and financial expenses.
 Categories used: age, bmi, alcohol_units_per_week, stress_level_score, sum_insured, icu_days, length_of_stay, pre_hospitalization_expense, post_hospitalization_expense, deductible_amount, and co_pay_amount.
 
-[172]
+[138]
 0s
-# Code
-num_cols = [
-    "age",
-    "bmi",
-    "alcohol_units_per_week",
-    "stress_level_score",
-    "sum_insured",
-    "icu_days",
-    "length_of_stay",
-    "pre_hospitalization_expense",
-    "post_hospitalization_expense",
-    "deductible_amount",
-    "co_pay_amount",
-]
 
-corr = df[num_cols].corr()
-
-sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
-
-plt.title("Correlation Heatmap – Health & Financial Metrics")
-plt.tight_layout()
-plt.show()
 
 Output explanation: Color-coded cells display Pearson correlation coefficients ranging from −1.0 (strong negative) to +1.0 (strong positive).
 Insight: ICU days and length of stay share a strong positive correlation (+0.78), while post-hospitalization costs closely align with total hospital stay length.
@@ -1554,9 +1525,24 @@ Insight: ICU days and length of stay share a strong positive correlation (+0.78)
 Goal: To assess customer utilization patterns across different hospital facility classifications.
 Categories used: hospital_tier and the count of patient admissions per tier
 
-[173]
-3s
+[139]
+0s
+# Code
+tier_count = df["hospital_tier"].value_counts().reset_index()
+tier_count.columns = ["Hospital_Tier", "Customer_Count"]
 
+fig = px.bar(
+    tier_count,
+    x="Hospital_Tier",
+    y="Customer_Count",
+    title="Hospital Tier-wise Customer Count",
+    text="Customer_Count",
+    color="Hospital_Tier",
+    color_discrete_sequence=px.colors.qualitative.Set2,
+)
+
+fig.update_traces(textposition="outside")
+fig.show()
 
 Output explanation: Vertical columns indicate total admissions in each hospital tier, labeled with exact counts for precise review.
 Insight: Private corporate hospitals lead facility utilization with over 50.5% of claims, followed by private small hospitals (34.6%) and government institutions (14.9%)
@@ -1564,28 +1550,9 @@ Insight: Private corporate hospitals lead facility utilization with over 50.5% o
 Goal: To explore whether higher BMI values correlate with larger medical claim settlements.
 Categories used: bmi on the X-axis and total_claim_amount_num on the Y-axis.
 
-[174]
-2s
-# Code
-df["total_claim_amount_num"] = pd.to_numeric(
-    df["total_claim_amount"].astype(str).str.replace(r"[^\d.]", "", regex=True),
-    errors="coerce",
-)
+[140]
+0s
 
-fig = px.scatter(
-    df,
-    x="bmi",
-    y="total_claim_amount_num",
-    title="BMI vs Total Claim Amount",
-    labels={
-        "bmi": "Body Mass Index (BMI)",
-        "total_claim_amount_num": "Total Claim Amount (₹)",
-    },
-    opacity=0.6,
-    trendline="ols",
-)
-
-fig.show()
 
 Output explanation: Data points spread across the grid illustrate individual patient profiles, while the fitted trend line summarizes the overarching directional trend.
 Insight: Higher BMI metrics (over 30.0) show a distinct upward drift in total claim amounts, driven by higher rates of chronic co-morbidities requiring extended care.
@@ -1593,7 +1560,7 @@ Insight: Higher BMI metrics (over 30.0) show a distinct upward drift in total cl
 Goal: To compare psychological stress levels among individual, family floater, and senior citizen plan holders.
 Categories used: policy_type and stress_level_score.
 
-[175]
+[141]
 0s
 # Code
 fig = px.violin(
@@ -1610,6 +1577,118 @@ fig.show()
 
 Output explanation: The width of each violin shape reflects data concentration at various stress score values, while internal box lines mark medians and interquartile ranges.
 Insight: Senior citizen policyholders demonstrate a slightly higher median stress score (around 6.2/10) compared to individual plan holders (around 4.9/10), reflecting age-related health management concerns.
+11 .Box Plot – Hospital Tier vs Claim Amount
+Insights:
+Compared claim amount distributions across different hospital tiers.
+Identified differences in median claim amounts between hospital tiers.
+Examined claim amount variability using the interquartile range (IQR).
+Detected potential outliers indicating unusually high or low claim amounts.
+Evaluated variations in claim costs across hospital tiers.
+
+[142]
+0s
+plt.figure(figsize=(9, 6))
+sns.boxplot(x='hospital_tier', y='total_claim_amount', data=df, palette='Set2')
+plt.title('Claim Amount Distribution by Hospital Tier')
+plt.xlabel('Hospital Tier')
+plt.ylabel('Total Claim Amount')
+plt.show()
+
+Output:
+A box plot illustrating claim amount distributions by hospital tier.
+A visual comparison of median claim amounts, spread, and potential outliers.
+A better understanding of claim cost variations across hospital tiers.
+12 .Health Conditions Diabetes & Hypertension Distribution
+Insights:
+Compared the number of customers with and without diabetes.
+Compared the number of customers with and without hypertension.
+Identified the most common category for each health condition.
+Examined the distribution of these medical conditions among health insurance customers
+
+[143]
+0s
+
+
+Output:
+Bar chart showing the distribution of diabetes among customers.
+Bar chart showing the distribution of hypertension among customers.
+A clear comparison of customers with and without each health condition.
+13 .Scatter Plot – Length of Stay vs Total Claim Amount
+Insights:
+Examined the relationship between length of stay and total claim amount.
+Identified whether longer hospital stays are associated with higher claim amounts.
+Compared claim amounts for patients with similar lengths of stay.
+Observed potential outliers with unusually high claim amounts.
+
+[144]
+0s
+plt.figure(figsize=(8, 5))
+sns.scatterplot(
+    x='length_of_stay', y='total_claim_amount', data=df, alpha=0.6, color='purple'
+)
+plt.title('Length of Stay vs Total Claim Amount')
+plt.xlabel('Length of Stay (Days)')
+plt.ylabel('Total Claim Amount')
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.show()
+
+Output:
+A scatter plot displaying length of stay against total claim amount.
+A visual comparison of hospitalization duration and claim costs.
+Insights into claim patterns and potential outliers.
+14 . Horizontal Bar Chart – State-wise Claim Analysis
+Insights:
+Compared total claim amounts across different states.
+Identified states with the highest and lowest total claim amounts.
+Examined geographical variations in insurance claim distribution.
+Highlighted states that contribute significantly to the overall claim amount.
+
+[145]
+0s
+plt.figure(figsize=(10, 6))
+state_counts = df['state'].value_counts().sort_values(ascending=True)
+state_counts.plot(kind='barh', color='cornflowerblue', edgecolor='black')
+plt.title('Number of Claims by State')
+plt.xlabel('Number of Claims')
+plt.ylabel('State')
+plt.show()
+
+Output:
+A horizontal bar chart showing state-wise total claim amounts.
+A comparison of claim amounts across states.
+Insights into geographical claim patterns in the Health Insurance dataset.
+15 .Time-Based Trend Analysis Monthly/Yearly Grouping
+Insights:
+Examined monthly and yearly variations in total claim amounts.
+Identified periods with higher and lower claim activity.
+Compared claim trends across different months and years.
+Observed patterns and fluctuations in claim frequency and costs over time.
+
+[146]
+0s
+
+
+Output:
+Monthly and yearly summaries of total claim amounts and claim counts.
+Trend charts showing changes in claim amounts over time.
+Insights into claim patterns and variations across different periods.
+16 .Correlation Heatmap – Clean & Readable
+Insights:
+Identified positive and negative correlations between numerical variables.
+Examined the relationship between hospital bill amount and total claim amount.
+Analyzed correlations among age, BMI, annual income, and medical expenses.
+Identified variables with strong, moderate, or weak linear relationships.
+Used correlation patterns to support further analysis without assuming causation.
+
+[147]
+0s
+
+
+Output:
+A clean, readable correlation heatmap with annotated correlation coefficients.
+A table displaying the strongest correlations between numerical variable pairs.
+A better understanding of relationships among customer, hospitalization, and insurance claim variables.
 Colab paid products
 -
 Cancel contracts here
+
