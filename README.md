@@ -1,5 +1,3 @@
-
-Health Insurance Customers Data Analysis
 PROJECT TITLE: Health Insurance Customers Data Analysis
 Project Goals
 The main goal of this project is to perform Exploratory Data Analysis (EDA) on health insurance customer data to identify meaningful patterns, trends, and insights.
@@ -1691,4 +1689,5 @@ A better understanding of relationships among customer, hospitalization, and ins
 Colab paid products
 -
 Cancel contracts here
+
 
